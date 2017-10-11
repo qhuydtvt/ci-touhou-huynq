@@ -3,7 +3,6 @@
  */
 public class Program {
     public static void main(String[] args) {
-        System.out.println("Hi CI 2");
-        System.out.println("Touhou is comming");
+        GameWindow gameWindow  = new GameWindow();
     }
 }
