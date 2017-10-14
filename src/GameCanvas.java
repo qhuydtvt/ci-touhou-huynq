@@ -25,6 +25,13 @@ public class GameCanvas extends JPanel {
     BufferedImage backBuffer;
     Graphics backGraphics;
 
+    final int SPEED = 5;
+
+    final int LEFT = 0;
+    final int RIGHT = 384;
+    final int TOP = 0;
+    final int BOTTOM = 500;
+
     public GameCanvas() {
         //1. Create back buffer
         backBuffer = new BufferedImage(800, 600, BufferedImage.TYPE_INT_ARGB);
@@ -97,13 +104,38 @@ public class GameCanvas extends JPanel {
         int vy = 0;
 
         if (rightPressed) {
-            vx += 5;
+            vx += SPEED;
         }
 
         if (leftPressed) {
-            vx -= 5;
+            vx -= SPEED;
         }
 
-        playerX = playerX + vx;
+        if(downPressed) {
+            vy += SPEED;
+        }
+
+        if(upPressed) {
+            vy -= SPEED;
+        }
+
+        playerX += vx;
+        playerY += vy;
+
+        playerX = (int)clamp(playerX, LEFT, RIGHT);
+        playerY = (int)clamp(playerY, TOP, BOTTOM);
+    }
+
+    
+    private float clamp(float value, float min, float max) {
+        if (value < min) {
+            return min;
+        }
+
+        if (value > max) {
+            return max;
+        }
+
+        return value;
     }
 }
