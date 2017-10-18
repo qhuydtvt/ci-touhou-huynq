@@ -1,3 +1,4 @@
+import bases.GameObject;
 import touhou.Player;
 import touhou.PlayerSpell;
 
@@ -23,7 +24,6 @@ public class GameCanvas extends JPanel {
     Graphics backGraphics;
 
     Player player = new Player();
-    ArrayList<PlayerSpell> spells = new ArrayList<>();
 
     public GameCanvas() {
 
@@ -37,16 +37,15 @@ public class GameCanvas extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        GameObject.add(player);
     }
 
     public void render() {
         //1. Draw everything on back buffer
         backGraphics.drawImage(background, 0, 0, null);
-        player.render(backGraphics);
 
-        for (PlayerSpell spell: spells) {
-            spell.render(backGraphics);
-        }
+        GameObject.renderAll(backGraphics);
 
         //2. Call repaint
         repaint();
@@ -70,11 +69,6 @@ public class GameCanvas extends JPanel {
     }
 
     public void run() {
-        player.run();
-        player.shoot(spells);
-
-        for(PlayerSpell spell: spells) {
-            spell.run();
-        }
+        GameObject.runAll();
     }
 }

@@ -1,5 +1,6 @@
 package touhou;
 
+import bases.GameObject;
 import bases.Utils;
 
 import java.awt.*;
@@ -12,13 +13,7 @@ import static java.awt.event.KeyEvent.VK_X;
 /**
  * Created by huynq on 10/14/17.
  */
-public class Player {
-    // Properies / Attributes
-
-    BufferedImage image;
-
-    public int x = 182;
-    public int y = 500;
+public class Player extends GameObject {
 
     boolean rightPressed;
     boolean leftPressed;
@@ -34,13 +29,17 @@ public class Player {
     final int TOP = 0;
     final int BOTTOM = 500;
 
+    int coolDownCount;
+    boolean spellDisabled;
+    final int COOL_DOWN_TIME = 10;
 
     public Player() {
-        image = Utils.loadImage("assets/images/players/straight/0.png");
-    }
+        x = 182;
+        y = 500;
 
-    public void render(Graphics backGraphics) {
-        backGraphics.drawImage(image, x, y, null);
+        image = Utils.loadImage("assets/images/players/straight/0.png");
+
+        spellDisabled = false;
     }
 
     public void keyPressed(KeyEvent e) {
@@ -90,6 +89,11 @@ public class Player {
     }
 
     public void run() {
+        move();
+        shoot();
+    }
+
+    private void move() {
         int vx = 0;
         int vy = 0;
 
@@ -117,14 +121,25 @@ public class Player {
         y = (int)clamp(y, TOP, BOTTOM);
     }
 
-    public void shoot(ArrayList<PlayerSpell> spells) {
+    public void shoot() {
+        if (spellDisabled) {
+            coolDownCount++;
+            if (coolDownCount >= COOL_DOWN_TIME) {
+                spellDisabled = false;
+                coolDownCount = 0;
+            }
+            return;
+        }
+
         if (xPressed) {
             PlayerSpell newSpell = new PlayerSpell();
 
             newSpell.x = x;
             newSpell.y = y;
 
-            spells.add(newSpell);
+            GameObject.add(newSpell);
+
+            spellDisabled = true;
         }
     }
 
