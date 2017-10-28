@@ -1,6 +1,6 @@
 import bases.GameObject;
-import touhou.Player;
-import touhou.PlayerSpell;
+import touhou.enemies.EnemySpawner;
+import touhou.players.Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -9,9 +9,6 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-
-import static java.awt.event.KeyEvent.*;
 
 /**
  * Created by huynq on 10/11/17.
@@ -39,6 +36,7 @@ public class GameCanvas extends JPanel {
         }
 
         GameObject.add(player);
+        GameObject.add(new EnemySpawner());
     }
 
     public void render() {
@@ -58,15 +56,6 @@ public class GameCanvas extends JPanel {
         g.drawImage(backBuffer, 0, 0, null);
     }
 
-
-    public void keyPressed(KeyEvent e) {
-        player.keyPressed(e);
-    }
-
-
-    public void keyReleased(KeyEvent e) {
-        player.keyReleased(e);
-    }
 
     public void run() {
         GameObject.runAll();
